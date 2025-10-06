@@ -1,0 +1,81 @@
+Thread Scaling Test for 5000000 vertices and 25000000 connections:
+Threads: 1, Time: 4130 ms
+--------
+Threads: 2, Time: 2045 ms
+--------
+Threads: 3, Time: 1419 ms
+--------
+Threads: 4, Time: 1088 ms
+--------
+Threads: 5, Time: 930 ms
+--------
+Threads: 6, Time: 918 ms
+--------
+Threads: 7, Time: 860 ms
+--------
+Threads: 8, Time: 790 ms
+--------
+Threads: 9, Time: 808 ms
+--------
+Threads: 10, Time: 649 ms
+--------
+Threads: 11, Time: 666 ms
+--------
+Threads: 12, Time: 633 ms
+--------
+Threads: 13, Time: 807 ms
+--------
+Threads: 14, Time: 620 ms
+--------
+Threads: 15, Time: 580 ms
+--------
+Threads: 16, Time: 548 ms
+--------
+Threads: 17, Time: 520 ms
+--------
+Threads: 18, Time: 597 ms
+--------
+Threads: 19, Time: 477 ms
+--------
+Threads: 20, Time: 493 ms
+--------
+Threads: 21, Time: 719 ms
+--------
+Threads: 22, Time: 549 ms
+--------
+Threads: 23, Time: 576 ms
+--------
+Threads: 24, Time: 507 ms
+--------
+Threads: 25, Time: 471 ms
+--------
+Threads: 26, Time: 488 ms
+--------
+Threads: 27, Time: 700 ms
+--------
+Threads: 28, Time: 508 ms
+--------
+Threads: 29, Time: 550 ms
+--------
+Threads: 30, Time: 455 ms
+--------
+Threads: 31, Time: 487 ms
+--------
+Threads: 32, Time: 679 ms
+--------
+Threads: 33, Time: 493 ms
+--------
+Threads: 34, Time: 460 ms
+--------
+Threads: 35, Time: 540 ms
+--------
+Threads: 36, Time: 505 ms
+--------
+Threads: 37, Time: 460 ms
+--------
+Threads: 38, Time: 644 ms
+--------
+Threads: 39, Time: 605 ms
+--------
+Threads: 40, Time: 477 ms
+--------

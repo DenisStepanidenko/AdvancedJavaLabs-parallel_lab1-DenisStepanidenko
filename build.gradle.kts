@@ -19,10 +19,14 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+
+    minHeapSize = "4g"
+    maxHeapSize = "8g"
+
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(21)
 }
 
 application {
@@ -38,9 +42,14 @@ tasks.register<JavaExec>("jcstress") {
     classpath = sourceSets.test.get().runtimeClasspath
     dependsOn("testClasses")
 
+    maxHeapSize = "8g"
+
+    jvmArgs = listOf("-Dfile.encoding=UTF-8")
+
     val argsProp = project.findProperty("jcstressArgs") as String?
     if (!argsProp.isNullOrBlank()) {
         args = argsProp.split("\\s+".toRegex())
     }
 }
+
 
