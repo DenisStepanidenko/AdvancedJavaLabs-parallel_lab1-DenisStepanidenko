@@ -12,3 +12,68 @@
 \
 **Загрузить графики в отдельную директорию в репозитории** \
 **Для построения графиков можно воспользоваться чем угодно**
+  
+## Решение
+## Основные этапы алгоритма:
+1) Иницализация. На данном этапе мы иницализируем массив атомарных флагов, которыми мы будем помечать просмотренные вершины, список вершин текущего уровня (только вершина startVertex), пул потоков фиксированного размера.
+```java
+        int numThreads = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+
+        AtomicBoolean[] visited = new AtomicBoolean[V];
+        for (int i = 0; i < V; i++) {
+            visited[i] = new AtomicBoolean(false);
+        }
+
+        
+        final List<Integer> currentLevel = new ArrayList<>();
+        visited[startVertex].set(true);
+        currentLevel.add(startVertex);
+
+```
+
+2) Опеределение размера батча и оптимального размера количества потоков для просмотра текущего уровня вершин. На данном этапе мы определяем количество вершин на текущем уровне, оптимальное количество потоков, которое эффективно использовать и также размер батча - промежуток вершин, которые будет обрабатывать конкретный поток.
+```java
+        int levelSize = currentLevel.size();
+        int actualThreads = Math.min(numThreads, levelSize);
+        int batchSize = (int) Math.ceil((double) levelSize / actualThreads);
+        CompletableFuture<List<Integer>>[] futures = new CompletableFuture[actualThreads];
+
+```
+3) Этап параллельной обработки вершин. Каждый поток обрабатывает свой диапозон вершин. Для обеспечении потокобезопаности мы используем атомарную операцию compareAndSet. Каждый поток собирает локально список каких-то вершин следующего уровня (тут обеспечение потокобезопасности не нужно, так как каждый поток работает со своей переменной). Заметим, что данный этап очень хорошо распараллеливается за счёт разделение диапазона вершин по потокам.
+```java
+        for (int i = 0; i < actualThreads; i++) {
+            final int start = i * batchSize;
+            final int end = Math.min(start + batchSize, levelSize);
+
+            futures[i] = CompletableFuture.supplyAsync(() -> {
+                List<Integer> localNextLevel = new ArrayList<>();
+                for (int j = start; j < end; j++) {
+                    int node = currentLevel.get(j);
+                    for (int neighbor : adjList[node]) {
+                        if (!visited[neighbor].get() && visited[neighbor].compareAndSet(false, true)) {
+                            localNextLevel.add(neighbor);
+                        }
+                    }
+                }
+                return localNextLevel;
+            }, executor);
+        }
+
+```
+4) Этап синхронизации. В главном потоке ожидаем выполнения всех рабочих потоков, которые просматривают текущий уровень вершин.
+```java
+
+        CompletableFuture.allOf(futures).join();
+```
+5) Этап объединение результатов. В главном потоке формируем новый текущий уровень вершин, исходя из результатов выполнения потоков.
+```java
+        currentLevel.clear();
+        for (CompletableFuture<List<Integer>> future : futures) {
+            currentLevel.addAll(future.join());
+        }
+```
+
+## Анализ с помощью JCStress.
+
+
