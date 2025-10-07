@@ -67,6 +67,7 @@ class Graph {
                 }
 
 
+
                 CompletableFuture.allOf(futures).join();
                 currentLevel.clear();
                 for (CompletableFuture<List<Integer>> future : futures) {
