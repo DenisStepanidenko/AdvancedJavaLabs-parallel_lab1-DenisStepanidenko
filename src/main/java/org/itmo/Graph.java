@@ -13,6 +13,7 @@ class Graph {
     Graph(int vertices) {
         this.V = vertices;
         adjList = new ArrayList[vertices];
+        
         for (int i = 0; i < vertices; ++i) {
             adjList[i] = new ArrayList<>();
         }
